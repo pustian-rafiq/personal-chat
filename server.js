@@ -1,9 +1,34 @@
 import {ApolloServer, gql} from "apollo-server"
 
+
+const users = [
+    {
+        id:"1",
+        firstName: "Md. Rafiqul",
+        lastName: "Islam",
+        email: "rafiqul.pust.cse@gmail.com",
+        password: "123456"
+    },
+    {
+        id:"2",
+        firstName: "Kamrunnahar",
+        lastName: "Siddika",
+        email: "siddika.cse@gmail.com",
+        password: "123456"
+    },
+]
 // Create Schema
 const typeDefs = gql`
     type Query{
-        greet: String
+        users: [User],
+        user(id: ID!): User,
+    }
+
+    type User{
+        id: ID
+        firstName: String
+        lastName: String
+        email: String
     }
 `
 
@@ -11,7 +36,10 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        greet: ()=> "Hello Rafiqul"
+        users: ()=> users,
+        user: (parent,args, context)=> {
+            return users.find( user => user.id === args.id)
+        }
     }
 }
 
