@@ -23,6 +23,15 @@ const typeDefs = gql`
         users: [User],
         user(id: ID!): User,
     }
+input UserInput{
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
+}
+type Mutation{
+    createNewUser(newUser: UserInput!): User
+}
 
     type User{
         id: ID
@@ -39,6 +48,16 @@ const resolvers = {
         users: ()=> users,
         user: (parent,args, context)=> {
             return users.find( user => user.id === args.id)
+        }
+    },
+    Mutation: {
+        createNewUser: (_,{newUser}) =>{
+            const user ={
+                id:"sjj-nfjf",
+                ...newUser
+            }
+            users.push(user)
+            return user
         }
     }
 }
